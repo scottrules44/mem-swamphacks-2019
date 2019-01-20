@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, TouchableHighlight } from 'react-native';
 import { Camera, Permissions, FileSystem, BarCodeScanner, ImageManipulator, FaceDetector, takeSnapshotAsync } from 'expo';
 import { Dimensions } from 'react-native';
 
@@ -46,9 +46,12 @@ export default class App extends React.Component {ß
 
   state = {
     faces: [],
-    previewPaused: false
+    previewPaused: false,
+    modalVisible: false,
   }
-
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
   _takePicture = async () => {
     const { previewPaused } = this.state;
     if (this.camera && !previewPaused) {
@@ -95,7 +98,12 @@ export default class App extends React.Component {ß
       )
     }
   }
+  _settingPopUp = () => {
 
+        
+        
+  }
+  
   render() {
     const { faces, previewPaused } = this.state; 
     let faceIndex;
@@ -110,8 +118,32 @@ export default class App extends React.Component {ß
         }
       }
     }
+
     return (
+      
+
       <View style={styles.container} >
+      <Modal
+          animationType="slide"
+          transparent={false}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+          }}>
+          <View>
+              <View style={{alignItems: 'center', top: 100}}>
+              <Text style={{fontSize: 50, fontWeight: 'bold'}}>Settings</Text>
+              </View>
+            <View style={{alignItems: 'center', top: 400}}>
+              <TouchableHighlight
+                onPress={() => {
+                  this.setModalVisible(!this.state.modalVisible);
+                }} >
+                <Text style={{fontSize: 20}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
         <Camera
           style={{ height: windowHeight, width: windowWidth }} 
           type={Camera.Constants.Type.back}
@@ -139,6 +171,14 @@ export default class App extends React.Component {ß
         {this._handleDisplayUploadButton()}
         <TouchableOpacity style = {styles.cameraButton} onPress = {this._takePicture}>
         </TouchableOpacity>
+        <TouchableHighlight style = {styles.settingButton} onPress={() => {
+            this.setModalVisible(true);
+          }}>
+        <Image
+          style={{width: 30, height: 30}}
+          source={require('./img/settings.png')}
+        />
+        </TouchableHighlight>
       </View>
     );
   }
