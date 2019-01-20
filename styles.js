@@ -11,6 +11,15 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     },
+    settingButton: {
+      position: 'absolute',
+      backgroundColor: 'transparent',
+      width: 30,
+      height: 30,
+      top : 50,
+      right : 20,
+      
+    },
     cameraButton: {
       position: 'absolute',
       backgroundColor: 'transparent',
